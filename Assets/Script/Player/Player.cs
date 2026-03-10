@@ -1,19 +1,21 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private float moveSpeed = 8f;
-    private float jumpForce = 15f;
+    [SerializeField] private float moveSpeed = 6f;
+    [SerializeField] private float jumpForce = 5f;
+    [SerializeField] private float doubleJumpForce = 7f;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Transform groundCheck;
+
     private bool isGrounded = true;
+    private int jumpCount = 0;
 
     private SpriteRenderer spriteRenderer;
-
     private Rigidbody2D rb;
-    Animator animator;
+    private Animator animator;
 
     private void Awake()
     {
@@ -25,23 +27,35 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        //isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
+
+        if (isGrounded && rb.velocity.y <= 0) jumpCount = 0;
 
         HandleMovement();
-        //HandleJump();
-        //HandleCombat();
+        HandleJump();
+        HandleCombat();
     }
 
-    //private void HandleJump()
-    //{
-    //    animator.SetBool("IsGrounded", isGrounded);
+    private void HandleJump()
+    {
+        animator.SetBool("IsGrounded", isGrounded);
 
-    //    if (Input.GetButtonDown("Jump") && isGrounded)
-    //    {
-    //        rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-    //        animator.SetTrigger("Jump");
-    //    }
-    //}
+        if (Input.GetButtonDown("Jump"))
+        {
+            if (isGrounded) // Nhảy lần 1
+            {
+                jumpCount = 1;
+                rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+                animator.SetTrigger("Jump");
+            }
+            else if (jumpCount == 1) // Nhảy lần 2 (Double Jump)
+            {
+                jumpCount = 2;
+                rb.velocity = new Vector2(rb.velocity.x, doubleJumpForce); // Nhảy cao hơn
+                animator.SetTrigger("Jump");
+            }
+        }
+    }
 
     private void HandleMovement()
     {
@@ -56,23 +70,23 @@ public class Player : MonoBehaviour
         {
             spriteRenderer.flipX = false;
         }
-        //if (playerInput != Vector2.zero)
-        //{
-        //    animator.SetBool("IsRunning", true);
-        //}
-        //else
-        //{
-        //    animator.SetBool("IsRunning", false);
-        //}
+        if (playerMoveInput != 0)
+        {
+            animator.SetBool("IsRunning", true);
+        }
+        else
+        {
+            animator.SetBool("IsRunning", false);
+        }
 
-        //animator.SetBool("IsRunning", moveInput != 0);
+        animator.SetBool("IsRunning", playerMoveInput != 0);
     }
 
-    //private void HandleCombat()
-    //{
-    //    if (Input.GetKeyDown(KeyCode.Z))
-    //    {
-    //        animator.SetTrigger("Attack");
-    //    }
-    //}
+    private void HandleCombat()
+    {
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            animator.SetTrigger("Attack");
+        }
+    }
 }
