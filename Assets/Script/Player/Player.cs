@@ -17,6 +17,10 @@ public class Player : MonoBehaviour
     private Rigidbody2D rb;
     private Animator animator;
 
+    private int lPressCount = 0;       
+    private float lastLClickTime = 0f; 
+    public float comboWindow = 0.6f;   
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -34,6 +38,7 @@ public class Player : MonoBehaviour
         HandleMovement();
         HandleJump();
         HandleCombat();
+        HandleBlock();
     }
 
     private void HandleJump()
@@ -84,9 +89,49 @@ public class Player : MonoBehaviour
 
     private void HandleCombat()
     {
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (Time.time - lastLClickTime > comboWindow)
+        {
+            lPressCount = 0;
+        }
+
+        if (Input.GetKeyDown(KeyCode.J))
         {
             animator.SetTrigger("Attack");
+            lPressCount = 0; 
+        }
+
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            animator.SetTrigger("Attack2");
+            lPressCount = 0; 
+        }
+
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            lPressCount++;
+            lastLClickTime = Time.time;
+
+            //if (lPressCount == 1)
+            //{
+            //    animator.SetTrigger("Attack"); 
+            //}
+            //else if (lPressCount == 2)
+            //{
+            //    animator.SetTrigger("Attack2"); 
+            //}
+            //else if (lPressCount == 3)
+            if (lPressCount == 3)
+            {
+                animator.SetTrigger("Combo");   
+                lPressCount = 0;                
+            }
         }
     }
+
+    private void HandleBlock()
+    {
+        bool blocking = Input.GetKey(KeyCode.I);
+        animator.SetBool("Block", blocking);
+    }
 }
+
