@@ -20,6 +20,7 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private float[] energyGains = { 10f, 15f, 25f };
 
     private HpAndMpEnemy myEnergy;
+    private bool isDoingCombo = false;
 
     private Transform target;
     private Rigidbody2D rb;
@@ -78,7 +79,7 @@ public class EnemyAI : MonoBehaviour
         animator.SetBool("IsGrounded", Mathf.Abs(rb.velocity.y) < 0.01f);
 
     }
-    IEnumerator AttackRoutine()
+    IEnumerator AttackRoutine() // xử lý attack + combo
     {
         isBusy = true;
         animator.SetBool("IsRunning", false);
@@ -86,6 +87,11 @@ public class EnemyAI : MonoBehaviour
 
         if (myEnergy != null && myEnergy.currentEnergy >= myEnergy.maxEnergy)
         {
+            isDoingCombo = true;
+            animator.SetTrigger("Shield");
+            yield return new WaitForSeconds(0.8f);
+            myEnergy.HideAura();
+
             int comboChoice = Random.Range(3, 4);
 
             if (comboChoice == 3)
@@ -95,9 +101,12 @@ public class EnemyAI : MonoBehaviour
                 yield return StartCoroutine(SingleAttack("Attack3"));
             }
             myEnergy.ResetEnergy();
+            isDoingCombo = false;
         }
         else
         {
+            isDoingCombo = false;
+
             int singleChoice = Random.Range(1, 3);
             if (singleChoice == 1) yield return StartCoroutine(SingleAttack("Attack"));
             else if (singleChoice == 2) yield return StartCoroutine(SingleAttack("Attack2"));
@@ -105,14 +114,10 @@ public class EnemyAI : MonoBehaviour
         }
 
         lastAttackTime = Time.time;
-
-        //yield return new WaitForSeconds(attackCooldown);
-
         yield return new WaitForSeconds(stopDurationAfterAttack);
-
         isBusy = false; // Sau khi đánh xong mới cho phép đuổi tiếp
     }
-    IEnumerator SingleAttack(string attackName)
+    IEnumerator SingleAttack(string attackName) // xử lý đòn đánh đơn
     {
         animator.SetTrigger(attackName);
 
@@ -128,7 +133,7 @@ public class EnemyAI : MonoBehaviour
         rb.velocity = new Vector2(rb.velocity.x, 8f);
         animator.SetTrigger("Jump");
     }
-    public void DealDamage(int attackIndex)
+    public void DealDamage(int attackIndex) // hàm gắn vào frame attack nhận biết đòn đánh nào
     {
         if (attackPoint == null) return;
 
@@ -140,8 +145,8 @@ public class EnemyAI : MonoBehaviour
 
             if (targetEnergy != null)
             {
-                targetEnergy.TakeDamage(attacKDamages[attackIndex]);
-                targetEnergy.GainEnergy(energyGains[attackIndex]);
+                targetEnergy.TakeDamageCombo(attacKDamages[attackIndex], isDoingCombo); // trừ hp player theo đòn đánh
+                targetEnergy.GainEnergy(energyGains[attackIndex]); // cộng mp cho player theo đòn đánh
                 if (myEnergy != null)
                 {
                     myEnergy.GainEnergy(energyGains[attackIndex]);
@@ -149,7 +154,7 @@ public class EnemyAI : MonoBehaviour
             }
         }
     }
-    void OnDrawGizmosSelected()
+    void OnDrawGizmosSelected() // hàm đổi màu vùng hitbox
     {
         if (attackPoint == null) return;
         Gizmos.color = Color.red;
