@@ -1,0 +1,33 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using Assets.Script.PlayerSpawn.Characters;
+
+public class Init : MonoBehaviour
+{
+   public static Character Player; 
+    void Start()
+    {
+        GameObject selectedCharacter = CharacterSelect.selectCharacter;
+        Vector3 spawnPos = transform.position;
+        spawnPos.z = 0f;
+
+        GameObject characterClone = Instantiate(selectedCharacter, spawnPos, Quaternion.identity);
+        Rigidbody2D rb = characterClone.GetComponent<Rigidbody2D>();
+        rb.freezeRotation = true;
+        SpriteRenderer sr = characterClone.GetComponent<SpriteRenderer>();
+        sr.sortingLayerName = "Player";
+        sr.sortingOrder = 0;
+
+
+        switch (selectedCharacter.name)
+        {
+            case "Fighter":
+                Player = new Fighter(characterClone);
+                break;
+            case "Samurai":
+                Player = new Samurai(characterClone);
+                break;
+        }
+    }
+}
