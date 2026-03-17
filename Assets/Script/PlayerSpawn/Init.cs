@@ -28,6 +28,12 @@ public class Init : MonoBehaviour
             case "Samurai":
                 Player = new Samurai(characterClone);
                 break;
+            case "Samurai_Archer":
+                Player = new Samurai_Archer(characterClone);
+                break;
+            case "Samurai_Commander":
+                Player = new Samurai_Commander(characterClone);
+                break;
         }
     }
 }
