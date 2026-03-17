@@ -19,20 +19,21 @@ public class Init : MonoBehaviour
         sr.sortingLayerName = "Player";
         sr.sortingOrder = 0;
 
-
+        Debug.Log(selectedCharacter.name);
         switch (selectedCharacter.name)
         {
-            case "Fighter":
-                Player = new Fighter(characterClone);
-                break;
-            case "Samurai":
-                Player = new Samurai(characterClone);
-                break;
+            
             case "Samurai_Archer":
                 Player = new Samurai_Archer(characterClone);
                 break;
             case "Samurai_Commander":
                 Player = new Samurai_Commander(characterClone);
+                break;
+            case "Fighter":
+                Player = new Fighter(characterClone);
+                break;
+            case "Samurai":
+                Player = new Samurai(characterClone);
                 break;
         }
     }
