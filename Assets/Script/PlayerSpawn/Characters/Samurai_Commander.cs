@@ -1,29 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Assets.Script.PlayerSpawn.Characters
+public class Samurai_Commander : Character
 {
-    public class Samurai_Commander : Character
+    public Samurai_Commander(GameObject obj) : base(obj)
     {
-        public Samurai_Commander(GameObject gameObject) : base(gameObject)
-        {
-            speed = 10;
-        }
+        speed = 6f;
+    }
 
-        protected override void FlipSprite()
-        {
-            Vector3 scale = transform.localScale;
-
-            if (moveX > 0)
-                scale.x = Mathf.Abs(scale.x);
-            else if (moveX < 0)
-                scale.x = -Mathf.Abs(scale.x);
-
-            transform.localScale = scale;
-        }
+    protected override void Flip()
+    {
+        if (moveX > 0)
+            transform.localScale = new Vector3(1, 1, 1);
+        else if (moveX < 0)
+            transform.localScale = new Vector3(-1, 1, 1);
     }
 }

@@ -1,40 +1,34 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Assets.Script.PlayerSpawn.Characters;
 
 public class Init : MonoBehaviour
 {
-   public static Character Player; 
     void Start()
     {
-        GameObject selectedCharacter = CharacterSelect.selectCharacter;
+        GameObject prefab = CharacterSelect.selectedCharacter;
+
+        if (prefab == null)
+        {
+            Debug.LogError("Ch?a ch?n nhân v?t!");
+            return;
+        }
+
         Vector3 spawnPos = transform.position;
         spawnPos.z = 0f;
 
-        GameObject characterClone = Instantiate(selectedCharacter, spawnPos, Quaternion.identity);
-        Rigidbody2D rb = characterClone.GetComponent<Rigidbody2D>();
-        rb.freezeRotation = true;
-        SpriteRenderer sr = characterClone.GetComponent<SpriteRenderer>();
-        sr.sortingLayerName = "Player";
-        sr.sortingOrder = 0;
+        GameObject player = Instantiate(prefab, spawnPos, Quaternion.identity);
 
-        Debug.Log(selectedCharacter.name);
-        switch (selectedCharacter.name)
+        // ??m b?o không b? n?m d??i map
+        SpriteRenderer sr = player.GetComponent<SpriteRenderer>();
+        if (sr != null)
         {
-            
-            case "Samurai_Archer":
-                Player = new Samurai_Archer(characterClone);
-                break;
-            case "Samurai_Commander":
-                Player = new Samurai_Commander(characterClone);
-                break;
-            case "Fighter":
-                Player = new Fighter(characterClone);
-                break;
-            case "Samurai":
-                Player = new Samurai(characterClone);
-                break;
+            sr.sortingLayerName = "Player";
+            sr.sortingOrder = 0;
+        }
+
+        Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            rb.freezeRotation = true;
         }
     }
 }

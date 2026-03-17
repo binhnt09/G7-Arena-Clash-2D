@@ -1,52 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using UnityEngine;
 
-using UnityEngine;
-
-public abstract class Character 
+public abstract class Character
 {
-    public int hp { get; set; }
-    public float speed { get; set; }
-
-    public Rigidbody2D body { get; set; }
-    public Animator animator { get; set; }
-    public BoxCollider2D boxCollider2D { get; set; }
-    public Transform transform { get; set; }
-
+    protected Rigidbody2D rb;
+    protected Animator animator;
+    protected Transform transform;
 
     protected float moveX;
-    protected float moveY;
-    public Character(GameObject gameObject)
-    {
-        hp = 3;
+    protected float speed;
 
-        body = gameObject.GetComponent<Rigidbody2D>();
-        animator = gameObject.GetComponent<Animator>();
-        boxCollider2D = gameObject.GetComponent<BoxCollider2D>();
-        transform = gameObject.transform;
+    public Character(GameObject obj)
+    {
+        rb = obj.GetComponent<Rigidbody2D>();
+        animator = obj.GetComponent<Animator>();
+        transform = obj.transform;
     }
 
-     public void Update()
+    public void Move(float inputX)
     {
-        InputHandler();
-        Move();
-        FlipSprite();
+        moveX = inputX;
+
+        rb.velocity = new Vector2(moveX * speed, rb.velocity.y);
+
+        if (animator != null)
+            animator.SetBool("IsRunning", moveX != 0);
+
+        Flip();
     }
 
-    protected virtual void InputHandler()
+    public void Jump(float force)
     {
-        moveX = Input.GetAxis("Horizontal");
-        moveY = Input.GetAxis("Vertical");
+        rb.velocity = new Vector2(rb.velocity.x, force);
+
+        if (animator != null)
+            animator.SetTrigger("Jump");
     }
 
-    protected virtual void Move()
-    {
-        body.velocity = new Vector2(moveX * speed, moveY * speed);
-        Debug.Log(body.velocity);
-    }
-
-    protected abstract void FlipSprite();
+    protected abstract void Flip();
 }
