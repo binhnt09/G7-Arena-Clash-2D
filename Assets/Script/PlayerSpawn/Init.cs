@@ -55,6 +55,12 @@ public class Init : MonoBehaviour
 
         GameObject characterClone = Instantiate(selectedCharacter, spawnPos, Quaternion.identity);
 
+        var vcam = FindObjectOfType<Cinemachine.CinemachineVirtualCamera>();
+        if (vcam != null)
+        {
+            vcam.Follow = characterClone.transform;
+        }
+
         HpAndMpPlayer playerScript = characterClone.GetComponent<HpAndMpPlayer>();
 
         // 3. Tìm 2 cái Fill trong Scene và gán vào
