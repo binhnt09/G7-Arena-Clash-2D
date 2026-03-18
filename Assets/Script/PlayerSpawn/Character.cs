@@ -135,6 +135,7 @@ public class Character
                 lPressCount = 0;
             }
         }
+
     }
 
     protected void HandleBlock()
