@@ -20,7 +20,13 @@ public class Enemy : MonoBehaviour
     private Rigidbody2D rb;
     private Animator animator;
 
-    private KeyCode moveLeft, moveRight, jumpKey, attackKey;
+    //private KeyCode moveLeft, moveRight, jumpKey, attackKey;
+    private KeyCode moveLeft, moveRight, jumpKey;
+    private KeyCode attack1Key, attack2Key, comboKey, blockKey;
+
+    private int comboPressCount = 0;
+    private float lastComboClickTime = 0f;
+    public float comboWindow = 0.6f;
 
     private void Awake()
     {
@@ -33,7 +39,7 @@ public class Enemy : MonoBehaviour
             moveLeft = KeyCode.A;
             moveRight = KeyCode.D;
             jumpKey = KeyCode.Space;
-            attackKey = KeyCode.Z;
+            //attackKey = KeyCode.Z;
         }
         else
         {
@@ -41,7 +47,12 @@ public class Enemy : MonoBehaviour
             moveRight = KeyCode.RightArrow;
             jumpKey = KeyCode.UpArrow;
             //attackKey = KeyCode.Keypad1;
-            attackKey = KeyCode.M;
+            //attackKey = KeyCode.M;
+
+            attack1Key = KeyCode.Keypad1;
+            attack2Key = KeyCode.Keypad2;
+            comboKey = KeyCode.Keypad3;
+            blockKey = KeyCode.Keypad5;
         }
     }
     void Start() { }
@@ -55,6 +66,7 @@ public class Enemy : MonoBehaviour
         HandleMovement();
         HandleJump();
         HandleCombat();
+        HandleBlock();
     }
 
     private void HandleJump()
@@ -106,9 +118,43 @@ public class Enemy : MonoBehaviour
 
     private void HandleCombat()
     {
-        if (Input.GetKeyDown(attackKey))
+        //if (Input.GetKeyDown(attackKey))
+        //{
+        //    animator.SetTrigger("Attack");
+        //}
+        // Reset combo nếu quá thời gian window
+        if (Time.time - lastComboClickTime > comboWindow)
+        {
+            comboPressCount = 0;
+        }
+
+        if (Input.GetKeyDown(attack1Key))
         {
             animator.SetTrigger("Attack");
+            comboPressCount = 0;
         }
+
+        if (Input.GetKeyDown(attack2Key))
+        {
+            animator.SetTrigger("Attack2");
+            comboPressCount = 0;
+        }
+
+        if (Input.GetKeyDown(comboKey))
+        {
+            comboPressCount++;
+            lastComboClickTime = Time.time;
+
+            if (comboPressCount == 3)
+            {
+                animator.SetTrigger("Combo");
+                comboPressCount = 0;
+            }
+        }
+    }
+    private void HandleBlock()
+    {
+        bool blocking = Input.GetKey(blockKey);
+        animator.SetBool("Block", blocking);
     }
 }
