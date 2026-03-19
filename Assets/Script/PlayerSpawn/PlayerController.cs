@@ -7,6 +7,7 @@ namespace Assets.Script.PlayerSpawn
     {
         Character player;
 
+
         void Start()
         {
             player = Init.Player;
@@ -20,6 +21,10 @@ namespace Assets.Script.PlayerSpawn
             }
         }
 
+        public void DealDame(float damage)
+        {
+            player.DealDamage(damage);
+        }
         private void OnDrawGizmos()
         {
             // Kiểm tra nếu player đã được khởi tạo và có attackPoint

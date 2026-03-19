@@ -44,6 +44,16 @@ public class EnemyAI : MonoBehaviour
     }
     void Update()
     {
+        if (target == null)
+        {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null)
+            {
+                target = player.transform;
+            }
+            return;
+        }
+
         MoveToEnemy();
     }
     private void MoveToEnemy()
@@ -141,12 +151,13 @@ public class EnemyAI : MonoBehaviour
 
         foreach (Collider2D hitTarget in hitTargets)
         {
-            HpAndMpEnemy targetEnergy = hitTarget.GetComponent<HpAndMpEnemy>();
+            HpAndMpPlayer targetEnergy = hitTarget.GetComponent<HpAndMpPlayer>();
 
             if (targetEnergy != null)
             {
-                targetEnergy.TakeDamageCombo(attacKDamages[attackIndex], isDoingCombo); // trừ hp player theo đòn đánh
-                targetEnergy.GainEnergy(energyGains[attackIndex]); // cộng mp cho player theo đòn đánh
+                targetEnergy.TakeDamageCombo(attacKDamages[attackIndex], isDoingCombo);
+                targetEnergy.GainEnergy(energyGains[attackIndex]);
+
                 if (myEnergy != null)
                 {
                     myEnergy.GainEnergy(energyGains[attackIndex]);

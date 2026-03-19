@@ -2,7 +2,7 @@
 
 public class Character
 {
-    // === Thông số chuyển động ===
+    // === Thông số chuyển động =  ==
     public float moveSpeed = 6f;
     public float jumpForce = 5f;
     public float doubleJumpForce = 8f;
@@ -24,8 +24,8 @@ public class Character
     protected float comboWindow = 0.6f;
 
     // === Hệ thống Chiến đấu (Dùng Tag "Enemy") ===
-    public float attackRange = 1.5f;
-    public float attackDamage = 20f;
+    public float attackRange = 1f;
+    public float attackDamage = 5f;
     public Transform attackPoint;
 
     public Character(GameObject obj, Transform groundCheck, LayerMask groundLayer)
@@ -111,14 +111,14 @@ public class Character
         if (Input.GetKeyDown(KeyCode.J))
         {
             animator?.SetTrigger("Attack");
-            DealDamage(attackDamage, false);
+            //DealDamage(attackDamage, false);
             lPressCount = 0;
         }
 
         if (Input.GetKeyDown(KeyCode.K))
         {
             animator?.SetTrigger("Attack2");
-            DealDamage(attackDamage, false);
+            //DealDamage(attackDamage, false);
             lPressCount = 0;
         }
 
@@ -128,10 +128,10 @@ public class Character
             lastLClickTime = Time.time;
             animator?.SetTrigger("Attack"); // H   iển thị anim đánh thường trước
 
-            if (lPressCount == 3)
+            if (lPressCount == 1)
             {
                 animator?.SetTrigger("Combo");
-                DealDamage(attackDamage * 1.5f, true);
+                //DealDamage(attackDamage * 1.5f, true);
                 lPressCount = 0;
             }
         }
@@ -145,7 +145,7 @@ public class Character
     }
 
     // HÀM QUAN TRỌNG: Quét theo Tag thay vì Layer
-    private void DealDamage(float damage, bool isCombo = false)
+    public void DealDamage(float damage, bool isCombo = false)
     {
         if (attackPoint == null) return;
 
@@ -161,9 +161,22 @@ public class Character
                 if (enemyScript != null)
                 {
                     enemyScript.TakeDamageCombo(damage, isCombo);
-                    Debug.Log("<color=cyan>[TAG SUCCESS]</color> Đã đấm: " + obj.name);
+                    enemyScript.GainEnergy(damage / 2);
                 }
+
+                HpAndMpPlayer targetEnergy = obj.GetComponent<HpAndMpPlayer>();
+
+                if (targetEnergy != null)
+                {
+                    targetEnergy.TakeDamageCombo(damage, isCombo);
+                    targetEnergy.GainEnergy(damage);
+                }
+
+
             }
+
+
         }
+
     }
 }

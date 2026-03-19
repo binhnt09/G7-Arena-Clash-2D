@@ -14,9 +14,10 @@ GameObject:
   - component: {fileID: 7441542893850234995}
   - component: {fileID: 7270693208049930792}
   - component: {fileID: -1806302532577980564}
+  - component: {fileID: 6375649478067217408}
   m_Layer: 5
   m_Name: Samurai_Commander
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30,7 +31,7 @@ RectTransform:
   m_GameObject: {fileID: 4528658642939587632}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 90}
-  m_LocalScale: {x: 0.31434184, y: 0.31434184, z: 0.019646365}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.019646365}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -102,7 +103,7 @@ Animator:
   m_GameObject: {fileID: 4528658642939587632}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: a0df273c7145b4c4487238346712f1f6, type: 2}
+  m_Controller: {fileID: 9100000, guid: 15146b3945901054bb76babe2a179f29, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -172,18 +173,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.33607662, y: -1.5544186}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 3.5, y: 5.75}
+    oldSize: {x: 8, y: 8}
     newSize: {x: 1.75, y: 5}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.25, y: 4.9375}
+  m_Size: {x: 2.9221532, y: 5.189579}
   m_EdgeRadius: 0
 --- !u!114 &-1806302532577980564
 MonoBehaviour:
@@ -197,3 +198,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c55ef9dd1b382a245b1b1970b20af2e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6375649478067217408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4528658642939587632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9aef061b813f1b4c8a7e662b2b2e7cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  currentHealth: 0
+  healthBarFill: {fileID: 0}
+  maxEnergy: 100
+  currentEnergy: 0
+  energyBarFill: {fileID: 0}
+  normalEnergyColor: {r: 0, g: 0, b: 1, a: 1}
+  fullEnergyColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  auraEffect: {fileID: 0}

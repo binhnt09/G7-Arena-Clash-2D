@@ -13,6 +13,9 @@ public class Enemy : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Transform groundCheck;
 
+    [SerializeField] private Transform attackPoint;
+    [SerializeField] private float attackRadius = 0.8f;
+
     private bool isGrounded = true;
     private int jumpCount = 0;
 
@@ -20,7 +23,6 @@ public class Enemy : MonoBehaviour
     private Rigidbody2D rb;
     private Animator animator;
 
-    //private KeyCode moveLeft, moveRight, jumpKey, attackKey;
     private KeyCode moveLeft, moveRight, jumpKey;
     private KeyCode attack1Key, attack2Key, comboKey, blockKey;
 
@@ -34,28 +36,33 @@ public class Enemy : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
 
+        // CẤU HÌNH PHÍM CHO 2 PLAYER
         if (!isPlayer2)
         {
+            // --- PLAYER 1 (Phím Chữ) ---
             moveLeft = KeyCode.A;
             moveRight = KeyCode.D;
-            jumpKey = KeyCode.Space;
-            //attackKey = KeyCode.Z;
+            jumpKey = KeyCode.Space; // Có thể đổi thành KeyCode.W nếu thích
+
+            attack1Key = KeyCode.J;
+            attack2Key = KeyCode.K;
+            comboKey = KeyCode.L;
+            blockKey = KeyCode.U;
         }
         else
         {
+            // --- PLAYER 2 (Phím Số Numpad) ---
             moveLeft = KeyCode.LeftArrow;
             moveRight = KeyCode.RightArrow;
             jumpKey = KeyCode.UpArrow;
-            //attackKey = KeyCode.Keypad1;
-            //attackKey = KeyCode.M;
 
+            // Dùng Keypad (bàn phím số bên phải). Nếu dùng laptop ko có Keypad, đổi chữ "Keypad" thành "Alpha" (vd: KeyCode.Alpha1)
             attack1Key = KeyCode.Keypad1;
             attack2Key = KeyCode.Keypad2;
             comboKey = KeyCode.Keypad3;
             blockKey = KeyCode.Keypad5;
         }
     }
-    void Start() { }
 
     private void Update()
     {
@@ -73,7 +80,6 @@ public class Enemy : MonoBehaviour
     {
         animator.SetBool("IsGrounded", isGrounded);
 
-        //if (Input.GetButtonDown("Jump"))
         if (Input.GetKeyDown(jumpKey))
         {
             if (isGrounded) // Nhảy lần 1
@@ -118,10 +124,6 @@ public class Enemy : MonoBehaviour
 
     private void HandleCombat()
     {
-        //if (Input.GetKeyDown(attackKey))
-        //{
-        //    animator.SetTrigger("Attack");
-        //}
         // Reset combo nếu quá thời gian window
         if (Time.time - lastComboClickTime > comboWindow)
         {
@@ -140,6 +142,7 @@ public class Enemy : MonoBehaviour
             comboPressCount = 0;
         }
 
+        // Xử lý cơ chế bấm nút Combo nhiều lần
         if (Input.GetKeyDown(comboKey))
         {
             comboPressCount++;
@@ -152,6 +155,29 @@ public class Enemy : MonoBehaviour
             }
         }
     }
+    public void DealDamage(float damage) // hàm gắn vào frame attack nhận biết đòn đánh nào
+    {
+        if (attackPoint == null) return;
+
+        Collider2D[] hitTargets = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius);
+
+        foreach (Collider2D hitTarget in hitTargets)
+        {
+            HpAndMpPlayer targetEnergy = hitTarget.GetComponent<HpAndMpPlayer>();
+
+            if (targetEnergy != null)
+            {
+                targetEnergy.TakeDamageCombo(damage, true);
+                targetEnergy.GainEnergy(damage);
+
+                //if (myEnergy != null)
+                //{
+                //    myEnergy.GainEnergy(energyGains[attackIndex]);
+                //}
+            }
+        }
+    }
+
     private void HandleBlock()
     {
         bool blocking = Input.GetKey(blockKey);
