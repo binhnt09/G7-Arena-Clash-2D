@@ -24,8 +24,8 @@ public class Character
     protected float comboWindow = 0.6f;
 
     // === Hệ thống Chiến đấu (Dùng Tag "Enemy") ===
-    public float attackRange = 1.5f;
-    public float attackDamage = 20f;
+    public float attackRange = 1f;
+    public float attackDamage = 5f;
     public Transform attackPoint;
 
     public Character(GameObject obj, Transform groundCheck, LayerMask groundLayer)

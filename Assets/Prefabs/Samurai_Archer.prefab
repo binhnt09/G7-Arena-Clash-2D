@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5201124582121039029}
   - component: {fileID: 4845894060812953377}
   - component: {fileID: -2312291586377724738}
+  - component: {fileID: 48386110733034677}
   m_Layer: 5
   m_Name: Samurai_Archer
   m_TagString: Untagged
@@ -102,7 +103,7 @@ Animator:
   m_GameObject: {fileID: 2303976988294739736}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: a0df273c7145b4c4487238346712f1f6, type: 2}
+  m_Controller: {fileID: 9100000, guid: d190068dfea615e49996b9e4d06ceee0, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -176,7 +177,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.47, y: 1.03}
+    oldSize: {x: 8, y: 8}
     newSize: {x: 1.75, y: 5}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -197,3 +198,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c55ef9dd1b382a245b1b1970b20af2e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &48386110733034677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2303976988294739736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9aef061b813f1b4c8a7e662b2b2e7cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  currentHealth: 0
+  healthBarFill: {fileID: 0}
+  maxEnergy: 100
+  currentEnergy: 0
+  energyBarFill: {fileID: 0}
+  normalEnergyColor: {r: 0, g: 0, b: 1, a: 1}
+  fullEnergyColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  auraEffect: {fileID: 0}

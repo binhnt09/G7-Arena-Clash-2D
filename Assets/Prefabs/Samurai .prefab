@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1143353303662171700}
   - component: {fileID: 4112432598070012080}
   - component: {fileID: -5505659369040802243}
+  - component: {fileID: 7118923538783192578}
   m_Layer: 5
   m_Name: 'Samurai '
   m_TagString: Untagged
@@ -197,3 +198,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c55ef9dd1b382a245b1b1970b20af2e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7118923538783192578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1467471715875961605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9aef061b813f1b4c8a7e662b2b2e7cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  currentHealth: 0
+  healthBarFill: {fileID: 0}
+  maxEnergy: 100
+  currentEnergy: 0
+  energyBarFill: {fileID: 0}
+  normalEnergyColor: {r: 0, g: 0, b: 1, a: 1}
+  fullEnergyColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  auraEffect: {fileID: 0}
