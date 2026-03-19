@@ -25,6 +25,6 @@ public class MenuManager : MonoBehaviour
     public void PlayVsPlayer()
     {
         selectedMode = "Player"; // Ghi nhớ chọn đánh người
-        SceneManager.LoadScene("SelectCharater"); // Chuyển đến màn chọn nhân vật
+        SceneManager.LoadScene("PvsP_Scene"); // Chuyển đến màn chọn nhân vật
     }
 }
