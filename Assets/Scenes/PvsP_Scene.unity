@@ -131,7 +131,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 55071230}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: groundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4435,14 +4435,15 @@ GameObject:
   - component: {fileID: 218614105}
   - component: {fileID: 218614104}
   - component: {fileID: 218614103}
+  - component: {fileID: 218614109}
   - component: {fileID: 218614108}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SamuraiCommander
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!95 &218614103
 Animator:
   serializedVersion: 5
@@ -4597,11 +4598,12 @@ Transform:
   m_GameObject: {fileID: 218614102}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.19, y: -4.35, z: 0}
-  m_LocalScale: {x: 0.4, y: 0.4, z: 1}
+  m_LocalPosition: {x: -3.26, y: -3.31, z: 0}
+  m_LocalScale: {x: -0.4, y: 0.4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 55071230}
+  - {fileID: 2034349556}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &218614108
@@ -4613,16 +4615,43 @@ MonoBehaviour:
   m_GameObject: {fileID: 218614102}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c616b50ca478af4299db1126d76af28, type: 3}
+  m_Script: {fileID: 11500000, guid: 3e15ff2c5dc75dc4b90c46593223c8bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 100
+  currentHealth: 0
+  healthBarFill: {fileID: 2038045468}
+  maxEnergy: 100
+  currentEnergy: 0
+  energyBarFill: {fileID: 1924598314}
+  normalEnergyColor: {r: 0, g: 0, b: 1, a: 1}
+  fullEnergyColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  auraEffect: {fileID: 0}
+--- !u!114 &218614109
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 218614102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ea9784f503045d4392c4153ab38536c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isPlayer2: 1
   moveSpeed: 6
   jumpForce: 5
-  doubleJumpForce: 8
+  doubleJumpForce: 7
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
   groundCheck: {fileID: 55071230}
+  attackPoint: {fileID: 2034349556}
+  attackRadius: 1
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 128
   comboWindow: 0.6
 --- !u!1 &250095895
 GameObject:
@@ -8512,7 +8541,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &494786828
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -9283,11 +9312,9 @@ GameObject:
   - component: {fileID: 848158126}
   - component: {fileID: 848158125}
   - component: {fileID: 848158124}
-  - component: {fileID: 848158123}
   - component: {fileID: 848158122}
   - component: {fileID: 848158121}
   - component: {fileID: 848158120}
-  - component: {fileID: 848158128}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -9363,26 +9390,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &848158123
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 848158119}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c616b50ca478af4299db1126d76af28, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 6
-  jumpForce: 5
-  doubleJumpForce: 7
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  groundCheck: {fileID: 1398489406}
-  comboWindow: 0.6
 --- !u!61 &848158124
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -9524,27 +9531,6 @@ Transform:
   - {fileID: 1027646351}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &848158128
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 848158119}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9aef061b813f1b4c8a7e662b2b2e7cc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 100
-  currentHealth: 0
-  healthBarFill: {fileID: 272906377}
-  maxEnergy: 100
-  currentEnergy: 0
-  energyBarFill: {fileID: 474610233}
-  normalEnergyColor: {r: 0, g: 0, b: 1, a: 1}
-  fullEnergyColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  auraEffect: {fileID: 0}
 --- !u!1 &860621109
 GameObject:
   m_ObjectHideFlags: 0
@@ -14403,6 +14389,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2034349555
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2034349556}
+  m_Layer: 8
+  m_Name: AttackPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2034349556
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2034349555}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.11, y: -1.78, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 218614107}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2038045466
 GameObject:

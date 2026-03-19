@@ -170,7 +170,7 @@ public class Enemy : MonoBehaviour
             }
         }
     }
-    public void DealDamagePvsP(float damage)
+    public void DealDamage(float damage)
     {
         if (attackPoint == null) return;
 
