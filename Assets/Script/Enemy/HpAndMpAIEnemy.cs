@@ -112,6 +112,10 @@ public class HpAndMpEnemy : MonoBehaviour
         isDead = true;
         animator.SetTrigger("Die");
         animator.SetBool("IsDead", true);
+        if (BattleManager.instance != null)
+        {
+            BattleManager.instance.CheckGameOver("Enemy");
+        }
         Rigidbody2D rb = GetComponent<Rigidbody2D>();
         if (rb != null)
         {

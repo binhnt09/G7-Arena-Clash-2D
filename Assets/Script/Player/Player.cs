@@ -19,13 +19,17 @@ public class Player : MonoBehaviour
 
     private int lPressCount = 0;       
     private float lastLClickTime = 0f; 
-    public float comboWindow = 0.6f;   
+    public float comboWindow = 0.6f;
+
+    private HpAndMpEnemy myEnergy; 
+    private bool isBusy = false;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
+        myEnergy = GetComponent<HpAndMpEnemy>();
     }
     void Start() { }
 
@@ -34,6 +38,13 @@ public class Player : MonoBehaviour
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
 
         if (isGrounded && rb.velocity.y <= 0) jumpCount = 0;
+
+        if (isBusy)
+        {
+            rb.velocity = new Vector2(0, rb.velocity.y);
+            animator.SetBool("IsRunning", false);
+            return;
+        }
 
         HandleMovement();
         HandleJump();
@@ -97,13 +108,13 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.J))
         {
             animator.SetTrigger("Attack");
-            lPressCount = 0; 
+            lPressCount = 0;
         }
 
         if (Input.GetKeyDown(KeyCode.K))
         {
             animator.SetTrigger("Attack2");
-            lPressCount = 0; 
+            lPressCount = 0;
         }
 
         if (Input.GetKeyDown(KeyCode.L))
@@ -111,19 +122,20 @@ public class Player : MonoBehaviour
             lPressCount++;
             lastLClickTime = Time.time;
 
-            //if (lPressCount == 1)
-            //{
-            //    animator.SetTrigger("Attack"); 
-            //}
-            //else if (lPressCount == 2)
-            //{
-            //    animator.SetTrigger("Attack2"); 
-            //}
-            //else if (lPressCount == 3)
             if (lPressCount == 3)
             {
-                animator.SetTrigger("Combo");   
-                lPressCount = 0;                
+                // CHỈ KIỂM TRA NĂNG LƯỢNG Ở ĐÂY (Lần nhấn thứ 3)
+                if (myEnergy != null && myEnergy.currentEnergy >= myEnergy.maxEnergy)
+                {
+                    animator.SetTrigger("Combo");
+                    myEnergy.ResetEnergy();
+                    lPressCount = 0;
+                }
+                else
+                {
+                    Debug.Log("Đã nhấn đủ 3 lần nhưng chưa đủ năng lượng!");
+                    lPressCount = 0; // Reset để nhấn lại chuỗi mới
+                }
             }
         }
     }

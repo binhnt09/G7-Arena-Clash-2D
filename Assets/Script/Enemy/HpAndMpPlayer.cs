@@ -124,6 +124,10 @@ public class HpAndMpPlayer : MonoBehaviour
         isDead = true;
         animator.SetTrigger("Die");
         animator.SetBool("IsDead", true);
+        if (BattleManager.instance != null)
+        {
+            BattleManager.instance.CheckGameOver("Player");
+        }
         Rigidbody2D rb = GetComponent<Rigidbody2D>();
         if (rb != null)
         {
