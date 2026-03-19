@@ -14,6 +14,7 @@ public class Character
 
     protected LayerMask groundLayer;
     protected Transform groundCheck;
+    protected float groundCheckRadius = 0.2f;
 
     protected bool isGrounded = true;
     protected int jumpCount = 0;
@@ -71,13 +72,56 @@ public class Character
         attackPoint.localPosition = new Vector3(spriteRenderer.flipX ? -posX : posX, 0f, 0f);
     }
 
+    private float stayOnGroundTime = 0f; // Biến đếm thời gian đứng yên
+
     private void CheckGround()
     {
-        if (groundCheck == null) return;
-        // Kiểm tra chạm đất bằng Physics2D
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
-        if (isGrounded && rb.velocity.y <= 0.1f) jumpCount = 0;
+        // Kiểm tra nếu vận tốc Y gần bằng 0 (nhân vật đang đứng yên trên sàn)
+        // Dùng Abs để tính cả trường hợp đứng yên tuyệt đối
+        if (Mathf.Abs(rb.velocity.y) < 0.05f)
+        {
+            stayOnGroundTime += Time.deltaTime;
+
+            // Nếu đứng yên đủ lâu (khoảng 0.05s đến 0.1s) thì reset số lần nhảy
+            if (stayOnGroundTime > 0.05f)
+            {
+                isGrounded = true;
+                jumpCount = 0;
+            }
+        }
+        else
+        {
+            // Nếu vận tốc Y khác 0 (đang bay hoặc đang rơi 
+            stayOnGroundTime = 0f;
+            isGrounded = false;
+        }
+
         animator?.SetBool("IsGrounded", isGrounded);
+    }
+
+    protected void HandleJump()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            // Cho phép nhảy nếu đang ở trạng thái "ước lượng là chạm đất"
+            // Hoặc đang ở trên không nhưng mới nhảy 1 lần
+            if (isGrounded || (jumpCount > 0 && jumpCount < 2))
+            {
+                jumpCount++;
+
+                // Reset vận tốc Y về 0 trước khi nhảy để lực nhảy lần 2 luôn mạnh
+                rb.velocity = new Vector2(rb.velocity.x, 0);
+
+                float force = (jumpCount == 1) ? jumpForce : doubleJumpForce;
+                rb.AddForce(Vector2.up * force, ForceMode2D.Impulse);
+
+                animator?.SetTrigger("Jump");
+
+                // Sau khi bấm nhảy, lập tức hủy trạng thái chạm đất
+                isGrounded = false;
+                stayOnGroundTime = 0f;
+            }
+        }
     }
 
     protected void HandleMovement()
@@ -89,24 +133,6 @@ public class Character
         animator?.SetBool("IsRunning", moveX != 0);
     }
 
-    protected void HandleJump()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (isGrounded)
-            {
-                jumpCount = 1;
-                rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-                animator?.SetTrigger("Jump");
-            }
-            else if (jumpCount == 1)
-            {
-                jumpCount = 2;
-                rb.velocity = new Vector2(rb.velocity.x, doubleJumpForce);
-                animator?.SetTrigger("Jump");
-            }
-        }
-    }
 
     protected void HandleCombat()
     {
