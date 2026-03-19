@@ -798,9 +798,9 @@ MonoBehaviour:
   - 10
   - 15
   energyGains:
+  - 10
+  - 20
   - 30
-  - 35
-  - 25
 --- !u!95 &104991663
 Animator:
   serializedVersion: 5
