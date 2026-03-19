@@ -15,9 +15,10 @@ GameObject:
   - component: {fileID: 4112432598070012080}
   - component: {fileID: -5505659369040802243}
   - component: {fileID: 7118923538783192578}
+  - component: {fileID: -7100066009219876682}
   m_Layer: 5
   m_Name: 'Samurai '
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -31,7 +32,7 @@ RectTransform:
   m_GameObject: {fileID: 1467471715875961605}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 90}
-  m_LocalScale: {x: 0.31434184, y: 0.31434184, z: 0.019646365}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.019646365}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -219,3 +220,30 @@ MonoBehaviour:
   normalEnergyColor: {r: 0, g: 0, b: 1, a: 1}
   fullEnergyColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   auraEffect: {fileID: 0}
+--- !u!114 &-7100066009219876682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1467471715875961605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5b99b5b63d5bb54a94c89c7b9d95c65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 5
+  jumpForce: 8
+  attackPoint: {fileID: 0}
+  attackRadius: 0.8
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  attackDamages:
+  - 5
+  - 10
+  - 15
+  energyGains:
+  - 10
+  - 15
+  - 25
