@@ -13,6 +13,9 @@ public class Enemy : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Transform groundCheck;
 
+    [SerializeField] private Transform attackPoint;
+    [SerializeField] private float attackRadius = 0.8f;
+
     private bool isGrounded = true;
     private int jumpCount = 0;
 
@@ -149,6 +152,28 @@ public class Enemy : MonoBehaviour
             {
                 animator.SetTrigger("Combo");
                 comboPressCount = 0;
+            }
+        }
+    }
+    public void DealDamage(float damage) // hàm gắn vào frame attack nhận biết đòn đánh nào
+    {
+        if (attackPoint == null) return;
+
+        Collider2D[] hitTargets = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius);
+
+        foreach (Collider2D hitTarget in hitTargets)
+        {
+            HpAndMpPlayer targetEnergy = hitTarget.GetComponent<HpAndMpPlayer>();
+
+            if (targetEnergy != null)
+            {
+                targetEnergy.TakeDamageCombo(damage, true);
+                targetEnergy.GainEnergy(damage);
+
+                //if (myEnergy != null)
+                //{
+                //    myEnergy.GainEnergy(energyGains[attackIndex]);
+                //}
             }
         }
     }
