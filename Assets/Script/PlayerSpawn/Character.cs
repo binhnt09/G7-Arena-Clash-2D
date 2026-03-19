@@ -74,10 +74,33 @@ public class Character
     private void CheckGround()
     {
         if (groundCheck == null) return;
-        // Kiểm tra chạm đất bằng Physics2D
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
-        if (isGrounded && rb.velocity.y <= 0.1f) jumpCount = 0;
+
+        // Kiểm tra chạm đất
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.25f, groundLayer);
+
+        // Nếu đang chạm đất → reset số lần nhảy
+        if (isGrounded)
+        {
+            jumpCount = 0;
+        }
+
         animator?.SetBool("IsGrounded", isGrounded);
+    }
+
+    protected void HandleJump()
+    {
+        // Nhấn Space và chưa nhảy quá 2 lần
+        if (Input.GetKeyDown(KeyCode.Space) && jumpCount < 2)
+        {
+            jumpCount++; // tăng số lần nhảy
+
+            // Lựa chọn lực nhảy
+            float force = (jumpCount == 1) ? jumpForce : doubleJumpForce;
+
+            // Nhảy
+            rb.velocity = new Vector2(rb.velocity.x, force);
+            animator?.SetTrigger("Jump");
+        }
     }
 
     protected void HandleMovement()
@@ -89,24 +112,6 @@ public class Character
         animator?.SetBool("IsRunning", moveX != 0);
     }
 
-    protected void HandleJump()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (isGrounded)
-            {
-                jumpCount = 1;
-                rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-                animator?.SetTrigger("Jump");
-            }
-            else if (jumpCount == 1)
-            {
-                jumpCount = 2;
-                rb.velocity = new Vector2(rb.velocity.x, doubleJumpForce);
-                animator?.SetTrigger("Jump");
-            }
-        }
-    }
 
     protected void HandleCombat()
     {
