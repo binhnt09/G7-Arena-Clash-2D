@@ -2,7 +2,7 @@
 
 public class Character
 {
-    // === Thông số chuyển động ===
+    // === Thông số chuyển động =  ==
     public float moveSpeed = 6f;
     public float jumpForce = 5f;
     public float doubleJumpForce = 8f;
