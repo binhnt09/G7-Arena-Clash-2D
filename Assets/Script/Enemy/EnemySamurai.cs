@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class EnemySamurai : MonoBehaviour
 {
+    [Header("Player Settings")]
+    public bool isPlayer2 = false; // Biến này để BattleManager tự động tick
+
     [Header("Movement Setup")]
     [SerializeField] private float speed = 5f;
     [SerializeField] private float jumpForce = 8f;
@@ -16,7 +19,18 @@ public class EnemySamurai : MonoBehaviour
     [SerializeField] private float[] attackDamages = { 5f, 10f, 15f };
     [SerializeField] private float[] energyGains = { 10f, 15f, 25f };
 
-    private HpAndMpEnemy myEnergy; // Lưu ý: Sau này bạn nên đổi tên script này thành CharacterStats cho tổng quát
+    // Phím bấm di chuyển
+    private KeyCode moveLeft;
+    private KeyCode moveRight;
+    private KeyCode jumpKey;
+
+    // Phím bấm chiến đấu
+    private KeyCode attack1Key;
+    private KeyCode attack2Key;
+    private KeyCode comboKey;
+    private KeyCode hurtKey;
+
+    private HpAndMpEnemy myEnergy;
     private bool isDoingCombo = false;
     private bool isBusy = false;
 
@@ -32,9 +46,37 @@ public class EnemySamurai : MonoBehaviour
         myEnergy = GetComponent<HpAndMpEnemy>();
     }
 
+    void Start()
+    {
+        // Gán phím cho Player 1 và Player 2 ở Start (sau khi BattleManager đã tick isPlayer2)
+        if (!isPlayer2)
+        {
+            // --- PLAYER 1 (Phím Chữ) ---
+            moveLeft = KeyCode.A;
+            moveRight = KeyCode.D;
+            jumpKey = KeyCode.Space;
+
+            attack1Key = KeyCode.J;
+            attack2Key = KeyCode.K;
+            comboKey = KeyCode.L;
+            hurtKey = KeyCode.U;
+        }
+        else
+        {
+            // --- PLAYER 2 (Phím Mũi Tên & Numpad) ---
+            moveLeft = KeyCode.LeftArrow;
+            moveRight = KeyCode.RightArrow;
+            jumpKey = KeyCode.UpArrow;
+
+            attack1Key = KeyCode.Keypad1;
+            attack2Key = KeyCode.Keypad2;
+            comboKey = KeyCode.Keypad3;
+            hurtKey = KeyCode.Keypad4;
+        }
+    }
+
     void Update()
     {
-        // Nếu đang thực hiện đòn đánh hoặc bị choáng, không cho phép nhận input di chuyển
         if (isBusy)
         {
             rb.velocity = new Vector2(0, rb.velocity.y);
@@ -50,9 +92,9 @@ public class EnemySamurai : MonoBehaviour
     {
         float moveInput = 0f;
 
-        // Nhận input từ phím mũi tên
-        if (Input.GetKey(KeyCode.LeftArrow)) moveInput = -1f;
-        if (Input.GetKey(KeyCode.RightArrow)) moveInput = 1f;
+        // Nhận input từ biến KeyCode thay vì phím cứng
+        if (Input.GetKey(moveLeft)) moveInput = -1f;
+        if (Input.GetKey(moveRight)) moveInput = 1f;
 
         // Di chuyển
         rb.velocity = new Vector2(moveInput * speed, rb.velocity.y);
@@ -68,12 +110,10 @@ public class EnemySamurai : MonoBehaviour
             animator.SetBool("IsRunning", false);
         }
 
-        // Check ground cơ bản (dựa vào code cũ của bạn)
         bool isGrounded = Mathf.Abs(rb.velocity.y) < 0.01f;
         animator.SetBool("IsGrounded", isGrounded);
 
-        // Nhảy với phím mũi tên Lên
-        if (Input.GetKeyDown(KeyCode.UpArrow) && isGrounded)
+        if (Input.GetKeyDown(jumpKey) && isGrounded)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
             animator.SetTrigger("Jump");
@@ -82,18 +122,15 @@ public class EnemySamurai : MonoBehaviour
 
     private void HandleCombatInput()
     {
-        // Phím 1: Attack 1
-        if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1))
+        if (Input.GetKeyDown(attack1Key))
         {
             StartCoroutine(PerformSingleAttack("Attack"));
         }
-        // Phím 2: Attack 2
-        else if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2))
+        else if (Input.GetKeyDown(attack2Key))
         {
             StartCoroutine(PerformSingleAttack("Attack2"));
         }
-        // Phím 3: Combo (Yêu cầu đủ năng lượng)
-        else if (Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Keypad3))
+        else if (Input.GetKeyDown(comboKey))
         {
             if (myEnergy != null && myEnergy.currentEnergy >= myEnergy.maxEnergy)
             {
@@ -104,11 +141,9 @@ public class EnemySamurai : MonoBehaviour
                 Debug.Log("Chưa đủ năng lượng để dùng Combo!");
             }
         }
-        // Phím 4: Hurt (Thường thì Hurt sẽ được gọi khi bị đối phương đánh trúng, nhưng mình gán vào phím 4 theo yêu cầu để bạn test)
-        else if (Input.GetKeyDown(KeyCode.Alpha4) || Input.GetKeyDown(KeyCode.Keypad4))
+        else if (Input.GetKeyDown(hurtKey))
         {
-            animator.SetTrigger("HurtEnemy"); // Bạn cần đảm bảo Animator có param "Hurt"
-            // StartCoroutine(HandleHurtState()); // Nếu bạn muốn character bị khựng lại khi ấn phím 4
+            animator.SetTrigger("HurtEnemy");
         }
     }
 
@@ -119,7 +154,7 @@ public class EnemySamurai : MonoBehaviour
         animator.SetBool("IsRunning", false);
         animator.SetTrigger(attackName);
 
-        yield return null; // Đợi 1 frame để Animator cập nhật
+        yield return null;
 
         float animLength = animator.GetCurrentAnimatorStateInfo(0).length;
         yield return new WaitForSeconds(Mathf.Max(0f, animLength - 0.05f));
@@ -135,16 +170,15 @@ public class EnemySamurai : MonoBehaviour
 
         animator.SetTrigger("Shield");
         yield return new WaitForSeconds(0.8f);
-        
+
         if (myEnergy != null) myEnergy.HideAura();
 
-        // Chạy chuỗi combo tuần tự
         yield return StartCoroutine(PlayComboPart("Attack"));
         yield return StartCoroutine(PlayComboPart("Attack2"));
         yield return StartCoroutine(PlayComboPart("Attack3"));
 
         if (myEnergy != null) myEnergy.ResetEnergy();
-        
+
         isDoingCombo = false;
         isBusy = false;
     }
@@ -157,8 +191,7 @@ public class EnemySamurai : MonoBehaviour
         yield return new WaitForSeconds(Mathf.Max(0f, animLength - 0.05f));
     }
 
-    // Hàm này giữ nguyên để gọi trong Animation Event
-    public void DealDamage(int attackIndex) 
+    public void DealDamage(int attackIndex)
     {
         if (attackPoint == null) return;
 
@@ -168,11 +201,11 @@ public class EnemySamurai : MonoBehaviour
         {
             HpAndMpEnemy targetEnergy = hitTarget.GetComponent<HpAndMpEnemy>();
 
-            if (targetEnergy != null && hitTarget.gameObject != this.gameObject) // Tránh tự chém trúng mình
+            if (targetEnergy != null && hitTarget.gameObject != this.gameObject)
             {
-                targetEnergy.TakeDamageCombo(attackDamages[attackIndex], isDoingCombo); 
-                targetEnergy.GainEnergy(energyGains[attackIndex]); 
-                
+                targetEnergy.TakeDamageCombo(attackDamages[attackIndex], isDoingCombo);
+                targetEnergy.GainEnergy(energyGains[attackIndex]);
+
                 if (myEnergy != null)
                 {
                     myEnergy.GainEnergy(energyGains[attackIndex]);
@@ -181,7 +214,7 @@ public class EnemySamurai : MonoBehaviour
         }
     }
 
-    void OnDrawGizmosSelected() 
+    void OnDrawGizmosSelected()
     {
         if (attackPoint == null) return;
         Gizmos.color = Color.red;

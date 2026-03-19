@@ -5,7 +5,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     [Header("Player Settings")]
-    [SerializeField] private bool isPlayer2 = false;
+    public bool isPlayer2 = false;
 
     [SerializeField] private float moveSpeed = 6f;
     [SerializeField] private float jumpForce = 5f;
@@ -41,13 +41,43 @@ public class Enemy : MonoBehaviour
         animator = GetComponent<Animator>();
         myEnergy = GetComponent<HpAndMpEnemy>();
 
-        // CẤU HÌNH PHÍM CHO 2 PLAYER
+        //// CẤU HÌNH PHÍM CHO 2 PLAYER
+        //if (!isPlayer2)
+        //{
+        //    // --- PLAYER 1 (Phím Chữ) ---
+        //    moveLeft = KeyCode.A;
+        //    moveRight = KeyCode.D;
+        //    jumpKey = KeyCode.Space; // Có thể đổi thành KeyCode.W nếu thích
+
+        //    attack1Key = KeyCode.J;
+        //    attack2Key = KeyCode.K;
+        //    comboKey = KeyCode.L;
+        //    blockKey = KeyCode.U;
+        //}
+        //else
+        //{
+        //    // --- PLAYER 2 (Phím Số Numpad) ---
+        //    moveLeft = KeyCode.LeftArrow;
+        //    moveRight = KeyCode.RightArrow;
+        //    jumpKey = KeyCode.UpArrow;
+
+        //    // Dùng Keypad (bàn phím số bên phải). Nếu dùng laptop ko có Keypad, đổi chữ "Keypad" thành "Alpha" (vd: KeyCode.Alpha1)
+        //    attack1Key = KeyCode.Keypad1;
+        //    attack2Key = KeyCode.Keypad2;
+        //    comboKey = KeyCode.Keypad3;
+        //    blockKey = KeyCode.Keypad5;
+        //}
+    }
+    private void Start() // Thêm hàm Start() vào đây
+    {
+        // Đưa toàn bộ phần CẤU HÌNH PHÍM xuống Start()
+        // Lúc này BattleManager đã tick xong ô isPlayer2 nên nó sẽ chia phím cực chuẩn
         if (!isPlayer2)
         {
             // --- PLAYER 1 (Phím Chữ) ---
             moveLeft = KeyCode.A;
             moveRight = KeyCode.D;
-            jumpKey = KeyCode.Space; // Có thể đổi thành KeyCode.W nếu thích
+            jumpKey = KeyCode.Space;
 
             attack1Key = KeyCode.J;
             attack2Key = KeyCode.K;
@@ -61,7 +91,6 @@ public class Enemy : MonoBehaviour
             moveRight = KeyCode.RightArrow;
             jumpKey = KeyCode.UpArrow;
 
-            // Dùng Keypad (bàn phím số bên phải). Nếu dùng laptop ko có Keypad, đổi chữ "Keypad" thành "Alpha" (vd: KeyCode.Alpha1)
             attack1Key = KeyCode.Keypad1;
             attack2Key = KeyCode.Keypad2;
             comboKey = KeyCode.Keypad3;
@@ -190,7 +219,7 @@ public class Enemy : MonoBehaviour
             {
                 float finalDamage = damage;
 
-                if(targetAnimator != null && targetAnimator.GetBool("Block") == true)
+                if (targetAnimator != null && targetAnimator.GetBool("Block") == true)
                 {
                     finalDamage = damage / 2;
                     Debug.Log("Đối phương đang đỡ đòn! Sát thương giảm từ " + damage + " xuống " + finalDamage);
