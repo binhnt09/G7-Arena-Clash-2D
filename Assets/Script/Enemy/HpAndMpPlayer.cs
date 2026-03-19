@@ -119,11 +119,15 @@ public class HpAndMpPlayer : MonoBehaviour
             energyBarFill.fillAmount = currentEnergy / maxEnergy;
         }
     }
-    private void Die() // xử lý die tuyệt đối không bị bug die rồi lại đứng dạy 
+    private void Die() // xử lý die tuyệt đối không bị bug die rồi lại đứng    dạy 
     {
         isDead = true;
         animator.SetTrigger("Die");
         animator.SetBool("IsDead", true);
+        if (BattleManager.instance != null)
+        {
+            BattleManager.instance.CheckGameOver("Player");
+        }
         Rigidbody2D rb = GetComponent<Rigidbody2D>();
         if (rb != null)
         {
