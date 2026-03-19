@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Assets.Script.PlayerSpawn;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -143,7 +144,7 @@ public class EnemyAI : MonoBehaviour
         rb.velocity = new Vector2(rb.velocity.x, 8f);
         animator.SetTrigger("Jump");
     }
-    public void DealDamage(int attackIndex) // hàm gắn vào frame attack nhận biết đòn đánh nào
+    public void DealDamage(int attackIndex)
     {
         if (attackPoint == null) return;
 
@@ -151,17 +152,25 @@ public class EnemyAI : MonoBehaviour
 
         foreach (Collider2D hitTarget in hitTargets)
         {
-            HpAndMpPlayer targetEnergy = hitTarget.GetComponent<HpAndMpPlayer>();
+            // Lấy HpAndMpPlayer (còn dùng để trừ HP / MP)
+            HpAndMpPlayer targetEnergy = hitTarget.GetComponentInParent<HpAndMpPlayer>();
 
             if (targetEnergy != null)
             {
-                targetEnergy.TakeDamageCombo(attacKDamages[attackIndex], isDoingCombo);
+                float damageToDeal = attacKDamages[attackIndex];
+
+                // ✅ Lấy Character thông qua PlayerController
+                PlayerController playerCtrl = targetEnergy.GetComponentInParent<PlayerController>();
+                if (playerCtrl != null && playerCtrl.player != null && playerCtrl.player.isBlocking)
+                {
+                    damageToDeal *= 0.5f;  
+                }
+
+                targetEnergy.TakeDamageCombo(damageToDeal, isDoingCombo);
                 targetEnergy.GainEnergy(energyGains[attackIndex]);
 
                 if (myEnergy != null)
-                {
                     myEnergy.GainEnergy(energyGains[attackIndex]);
-                }
             }
         }
     }

@@ -28,11 +28,16 @@ public class Character
     public float attackDamage = 5f;
     public Transform attackPoint;
 
+    private HpAndMpPlayer myEnergy;
+    public bool isBlocking =false;
+
+
     public Character(GameObject obj, Transform groundCheck, LayerMask groundLayer)
     {
         rb = obj.GetComponent<Rigidbody2D>();
         animator = obj.GetComponent<Animator>();
         spriteRenderer = obj.GetComponent<SpriteRenderer>();
+        myEnergy = obj.GetComponent<HpAndMpPlayer>();
         transform = obj.transform;
 
         this.groundCheck = groundCheck;
@@ -122,26 +127,44 @@ public class Character
             lPressCount = 0;
         }
 
+        //if (Input.GetKeyDown(KeyCode.L))
+        //{
+        //    lPressCount++;
+        //    lastLClickTime = Time.time;
+        //    animator?.SetTrigger("Attack"); // H   iển thị anim đánh thường trước
+
+        //    if (lPressCount == 1)
+        //    {
+        //        animator?.SetTrigger("Combo");
+        //        //DealDamage(attackDamage * 1.5f, true);
+        //        lPressCount = 0;
+        //    }
+        //}
+
         if (Input.GetKeyDown(KeyCode.L))
         {
-            lPressCount++;
-            lastLClickTime = Time.time;
-            animator?.SetTrigger("Attack"); // H   iển thị anim đánh thường trước
-
-            if (lPressCount == 1)
+            if (myEnergy == null || myEnergy.currentEnergy < myEnergy.maxEnergy)
             {
-                animator?.SetTrigger("Combo");
-                //DealDamage(attackDamage * 1.5f, true);
-                lPressCount = 0;
+                Debug.Log("Chưa đủ năng lượng để dùng combo!");
+                return;
             }
+            animator?.SetTrigger("Attack"); // anim thường trước
+
+            animator?.SetTrigger("Combo");
+            myEnergy.ResetEnergy();
+
         }
 
     }
-
-    protected void HandleBlock()
+    private void HandleBlock()
     {
-        bool blocking = Input.GetKey(KeyCode.I);
-        animator?.SetBool("Block", blocking);
+        // I = block
+        isBlocking = Input.GetKey(KeyCode.I);
+        // Nếu có animator trong Character, có thể set trigger hoặc bool
+        if (animator != null)
+        {
+            animator.SetBool("Block", isBlocking);
+        }
     }
 
     // HÀM QUAN TRỌNG: Quét theo Tag thay vì Layer
@@ -161,22 +184,14 @@ public class Character
                 if (enemyScript != null)
                 {
                     enemyScript.TakeDamageCombo(damage, isCombo);
-                    enemyScript.GainEnergy(damage / 2);
+                    enemyScript.GainEnergy(damage);
                 }
 
-                HpAndMpPlayer targetEnergy = obj.GetComponent<HpAndMpPlayer>();
-
-                if (targetEnergy != null)
+                if (myEnergy != null)
                 {
-                    targetEnergy.TakeDamageCombo(damage, isCombo);
-                    targetEnergy.GainEnergy(damage);
+                    myEnergy.GainEnergy(damage*2);
                 }
-
-
             }
-
-
         }
-
     }
 }
