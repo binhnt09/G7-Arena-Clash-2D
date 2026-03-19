@@ -91,7 +91,7 @@ public class Character
         }
         else
         {
-            // Nếu vận tốc Y khác 0 (đang bay hoặc đang rơi)
+            // Nếu vận tốc Y khác 0 (đang bay hoặc đang rơi 
             stayOnGroundTime = 0f;
             isGrounded = false;
         }
