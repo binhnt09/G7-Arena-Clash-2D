@@ -78,7 +78,7 @@ public class Init : MonoBehaviour
         sr.sortingLayerName = "Player";
         sr.sortingOrder = 0;
 
-        Transform groundCheck = characterClone.transform.Find("GroundCheck");
+        Transform groundCheck = characterClone.transform.Find("groundCheck");
 
         Player = new Character(characterClone, groundCheck, groundLayer);
     }

@@ -5,8 +5,7 @@ namespace Assets.Script.PlayerSpawn
 {
     public class PlayerController : MonoBehaviour
     {
-        Character player;
-
+        public Character player { get; set; }
 
         void Start()
         {
@@ -17,7 +16,12 @@ namespace Assets.Script.PlayerSpawn
         {
             if (Init.Player != null)
             {
-                Init.Player.Update();
+                Init.Player.Update(); // gọi update trong Character
+            }
+
+            if (Init.Player != null && Init.Player.isBlocking)
+            {
+                Debug.Log("Player đang block => Đã được giam nửa sát thương!");
             }
         }
 
