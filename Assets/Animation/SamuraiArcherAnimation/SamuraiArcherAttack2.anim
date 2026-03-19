@@ -83,9 +83,9 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0.4
-    functionName: DealDame
+    functionName: DealDamage
     data: 
     objectReferenceParameter: {fileID: 0}
-    floatParameter: 10
+    floatParameter: 5
     intParameter: 0
     messageOptions: 0
