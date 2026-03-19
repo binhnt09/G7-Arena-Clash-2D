@@ -39,20 +39,26 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Default
-    uniqueID: 0
-    locked: 0
   - name: BackGround
     uniqueID: 3056703053
     locked: 0
   - name: Background2
     uniqueID: 1219062081
     locked: 0
+  - name: Default
+    uniqueID: 0
+    locked: 0
   - name: Environment
     uniqueID: 4070319981
     locked: 0
+  - name: Environment_02
+    uniqueID: 2529790789
+    locked: 0
   - name: Ground
     uniqueID: 3357100281
+    locked: 0
+  - name: Environment_03
+    uniqueID: 3832202025
     locked: 0
   - name: Player
     uniqueID: 4123398183
