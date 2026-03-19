@@ -665,7 +665,7 @@ MonoBehaviour:
   - {fileID: 1533768222}
   CharacterName: {fileID: 1072497925}
   CharacterPrefabs:
-  - {fileID: 8013478867971922796, guid: 577e6ab1089c7264f8e4232750f92c65, type: 3}
+  - {fileID: 4860382096492331255, guid: 29744d8927cec884c9ba215ab9ce53bf, type: 3}
   - {fileID: 2303976988294739736, guid: 7beae16529c4b654b9be40fdb7f6383f, type: 3}
   - {fileID: 4528658642939587632, guid: 082c8e6b96994b14c9469ac2e24d2332, type: 3}
   - {fileID: 1467471715875961605, guid: 983163f89781bcf45a66885fe6c4df5c, type: 3}
