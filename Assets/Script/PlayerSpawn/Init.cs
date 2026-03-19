@@ -54,7 +54,8 @@ public class Init : MonoBehaviour
         spawnPos.z = 0f;
 
         GameObject characterClone = Instantiate(selectedCharacter, spawnPos, Quaternion.identity);
-
+        characterClone.tag = "Player";
+        characterClone.layer = LayerMask.NameToLayer("PlayerLayer");
         var vcam = FindObjectOfType<Cinemachine.CinemachineVirtualCamera>();
         if (vcam != null)
         {
