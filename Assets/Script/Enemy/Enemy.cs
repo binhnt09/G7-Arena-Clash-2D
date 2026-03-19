@@ -181,14 +181,23 @@ public class Enemy : MonoBehaviour
             // Bỏ qua chính mình
             if (hitTarget.gameObject == this.gameObject) continue;
 
+            Animator targetAnimator = hitTarget.GetComponent<Animator>();
+
             // Tìm script máu của ĐỐI PHƯƠNG
             HpAndMpEnemy targetEnergy = hitTarget.GetComponent<HpAndMpEnemy>();
 
             if (targetEnergy != null)
             {
-                targetEnergy.TakeDamage(damage);
-                targetEnergy.GainEnergy(damage);
+                float finalDamage = damage;
 
+                if(targetAnimator != null && targetAnimator.GetBool("Block") == true)
+                {
+                    finalDamage = damage / 2;
+                    Debug.Log("Đối phương đang đỡ đòn! Sát thương giảm từ " + damage + " xuống " + finalDamage);
+                }
+
+                targetEnergy.TakeDamage(finalDamage);
+                targetEnergy.GainEnergy(finalDamage);
                 // Tìm script máu của BẢN THÂN
                 if (myEnergy != null)
                 {

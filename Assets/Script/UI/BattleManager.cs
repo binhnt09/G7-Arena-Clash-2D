@@ -36,11 +36,12 @@ public class BattleManager : MonoBehaviour
         //if (winnerText != null)
         //    winnerText.text = winner + " CHIẾN THẮNG!";
         string currentScene = SceneManager.GetActiveScene().name;
+        bool isPvP = (currentScene == "PvsP_Scene") || (MenuManager.selectedMode == "Player") || (MenuManager.selectedMode == "Enemy");
 
         if (winnerText != null)
         {
             // Kiểm tra nếu là màn PvP (Bạn hãy thay đúng tên Scene PvP của bạn vào đây)
-            if (currentScene == "PvsP_Scene")
+            if (isPvP)
             {
                 winnerText.text = "K.O";
             }
