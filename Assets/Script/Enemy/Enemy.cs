@@ -16,6 +16,10 @@ public class Enemy : MonoBehaviour
     [SerializeField] private Transform attackPoint;
     [SerializeField] private float attackRadius = 0.8f;
 
+    [SerializeField] private LayerMask targetLayer;
+
+    HpAndMpEnemy myEnergy;
+
     private bool isGrounded = true;
     private int jumpCount = 0;
 
@@ -35,6 +39,7 @@ public class Enemy : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
+        myEnergy = GetComponent<HpAndMpEnemy>();
 
         // CẤU HÌNH PHÍM CHO 2 PLAYER
         if (!isPlayer2)
@@ -145,39 +150,59 @@ public class Enemy : MonoBehaviour
         // Xử lý cơ chế bấm nút Combo nhiều lần
         if (Input.GetKeyDown(comboKey))
         {
-            comboPressCount++;
-            lastComboClickTime = Time.time;
-
-            if (comboPressCount == 3)
+            if (myEnergy != null && myEnergy.currentEnergy >= myEnergy.maxEnergy)
             {
-                animator.SetTrigger("Combo");
+                comboPressCount++;
+                lastComboClickTime = Time.time;
+
+                if (comboPressCount == 1)
+                {
+                    animator.SetTrigger("Combo");
+                    comboPressCount = 0;
+                }
+                if (myEnergy != null) myEnergy.ResetEnergy();
+            }
+            else
+            {
+                // Nếu bấm phím Combo mà chưa đủ nộ thì reset bộ đếm và không làm gì cả
                 comboPressCount = 0;
+                Debug.Log("Chưa đủ 100% năng lượng để dùng Combo!");
             }
         }
     }
-    public void DealDamage(float damage) // hàm gắn vào frame attack nhận biết đòn đánh nào
+    public void DealDamagePvsP(float damage)
     {
         if (attackPoint == null) return;
 
-        Collider2D[] hitTargets = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius);
+        Collider2D[] hitTargets = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius, targetLayer);
 
         foreach (Collider2D hitTarget in hitTargets)
         {
-            HpAndMpPlayer targetEnergy = hitTarget.GetComponent<HpAndMpPlayer>();
+            // Bỏ qua chính mình
+            if (hitTarget.gameObject == this.gameObject) continue;
+
+            // Tìm script máu của ĐỐI PHƯƠNG
+            HpAndMpEnemy targetEnergy = hitTarget.GetComponent<HpAndMpEnemy>();
 
             if (targetEnergy != null)
             {
-                targetEnergy.TakeDamageCombo(damage, true);
+                targetEnergy.TakeDamage(damage);
                 targetEnergy.GainEnergy(damage);
 
-                //if (myEnergy != null)
-                //{
-                //    myEnergy.GainEnergy(energyGains[attackIndex]);
-                //}
+                // Tìm script máu của BẢN THÂN
+                if (myEnergy != null)
+                {
+                    myEnergy.GainEnergy(damage);
+                }
             }
         }
     }
-
+    void OnDrawGizmosSelected() // hàm đổi màu vùng hitbox
+    {
+        if (attackPoint == null) return;
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(attackPoint.position, attackRadius);
+    }
     private void HandleBlock()
     {
         bool blocking = Input.GetKey(blockKey);

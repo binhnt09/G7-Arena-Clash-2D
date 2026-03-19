@@ -4288,6 +4288,37 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!1 &213209755
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 213209756}
+  m_Layer: 8
+  m_Name: AttackPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &213209756
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 213209755}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.1, y: -1.99, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 494786829}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &216678958
 GameObject:
   m_ObjectHideFlags: 0
@@ -4740,7 +4771,7 @@ Transform:
   m_GameObject: {fileID: 330826441}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.59, y: -1.95, z: 0}
+  m_LocalPosition: {x: 0.68999994, y: -1.03, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6837,7 +6868,7 @@ Transform:
   m_GameObject: {fileID: 402439721}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.1, y: 0.92, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8474,9 +8505,10 @@ GameObject:
   - component: {fileID: 494786830}
   - component: {fileID: 494786833}
   - component: {fileID: 494786834}
-  m_Layer: 0
+  - component: {fileID: 494786835}
+  m_Layer: 8
   m_Name: SamuraiArcher
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8542,11 +8574,12 @@ Transform:
   m_GameObject: {fileID: 494786827}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.14, y: -4.26, z: 0}
+  m_LocalPosition: {x: -1.87, y: -3.37, z: 0}
   m_LocalScale: {x: -0.4, y: 0.4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1676361906}
+  - {fileID: 213209756}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &494786830
@@ -8682,7 +8715,33 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   groundCheck: {fileID: 1676361906}
+  attackPoint: {fileID: 213209756}
+  attackRadius: 1
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 128
   comboWindow: 0.6
+--- !u!114 &494786835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 494786827}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e15ff2c5dc75dc4b90c46593223c8bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  currentHealth: 0
+  healthBarFill: {fileID: 2038045468}
+  maxEnergy: 100
+  currentEnergy: 0
+  energyBarFill: {fileID: 1924598314}
+  normalEnergyColor: {r: 0, g: 0, b: 1, a: 1}
+  fullEnergyColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  auraEffect: {fileID: 0}
 --- !u!1 &696257300
 GameObject:
   m_ObjectHideFlags: 0
@@ -8751,8 +8810,8 @@ Canvas:
   m_GameObject: {fileID: 696257300}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_RenderMode: 1
+  m_Camera: {fileID: 1061034560}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -9228,6 +9287,7 @@ GameObject:
   - component: {fileID: 848158122}
   - component: {fileID: 848158121}
   - component: {fileID: 848158120}
+  - component: {fileID: 848158128}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -9276,6 +9336,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   groundCheck: {fileID: 1398489406}
+  attackPoint: {fileID: 1027646351}
+  attackRadius: 1
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 256
   comboWindow: 0.6
 --- !u!95 &848158122
 Animator:
@@ -9451,13 +9516,35 @@ Transform:
   m_GameObject: {fileID: 848158119}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.35, y: -4.87, z: 0}
+  m_LocalPosition: {x: -6.38, y: -3.96, z: 0}
   m_LocalScale: {x: 0.4, y: 0.4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1398489406}
+  - {fileID: 1027646351}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &848158128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 848158119}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9aef061b813f1b4c8a7e662b2b2e7cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  currentHealth: 0
+  healthBarFill: {fileID: 272906377}
+  maxEnergy: 100
+  currentEnergy: 0
+  energyBarFill: {fileID: 474610233}
+  normalEnergyColor: {r: 0, g: 0, b: 1, a: 1}
+  fullEnergyColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  auraEffect: {fileID: 0}
 --- !u!1 &860621109
 GameObject:
   m_ObjectHideFlags: 0
@@ -9951,7 +10038,7 @@ Transform:
   m_GameObject: {fileID: 949399967}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.099999994, y: 0.9200001, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -11117,6 +11204,37 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &1027646350
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1027646351}
+  m_Layer: 0
+  m_Name: AttackPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1027646351
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1027646350}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.09, y: -0.15, z: 0}
+  m_LocalScale: {x: -1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 848158127}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1061034558
 GameObject:
   m_ObjectHideFlags: 0
@@ -11178,7 +11296,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 7
+  orthographic size: 6
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -11203,7 +11321,7 @@ Transform:
   m_GameObject: {fileID: 1061034558}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.3, y: 0, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -11302,7 +11420,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1088845959}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: groundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11362,7 +11480,7 @@ Transform:
   m_GameObject: {fileID: 1110244680}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.59, y: 1.95, z: 0}
+  m_LocalPosition: {x: -0.2, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -11973,7 +12091,7 @@ GameObject:
   - component: {fileID: 1486431673}
   - component: {fileID: 1486431679}
   - component: {fileID: 1486431680}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -12008,7 +12126,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1486431672}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3ea9784f503045d4392c4153ab38536c, type: 3}
   m_Name: 
@@ -12021,6 +12139,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   groundCheck: {fileID: 1088845959}
+  attackPoint: {fileID: 0}
+  attackRadius: 0.8
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 0
   comboWindow: 0.6
 --- !u!61 &1486431675
 BoxCollider2D:
@@ -12239,7 +12362,7 @@ Transform:
   m_GameObject: {fileID: 1529826250}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.099999994, y: 0.9200001, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -13815,7 +13938,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1676361906}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: groundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13877,7 +14000,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1767145730}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: AttackPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13910,7 +14033,7 @@ GameObject:
   - component: {fileID: 1778002897}
   - component: {fileID: 1778002896}
   - component: {fileID: 1778002895}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: AuraWater
   m_TagString: Untagged
   m_Icon: {fileID: 0}
