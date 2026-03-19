@@ -126,7 +126,7 @@ public class Character
         {
             lPressCount++;
             lastLClickTime = Time.time;
-            animator?.SetTrigger("Attack"); // Hiển thị anim đánh thường trước
+            animator?.SetTrigger("Attack"); // H   iển thị anim đánh thường trước
 
             if (lPressCount == 3)
             {
