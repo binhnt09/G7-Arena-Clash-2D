@@ -769,6 +769,7 @@ Transform:
   m_Children:
   - {fileID: 1227369431}
   - {fileID: 715988740}
+  - {fileID: 1358902751}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &104991662
@@ -784,11 +785,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemySpeed: 2
-  attackRange: 1
+  attackRange: 1.4
   attackCooldown: 0.8
   stopDurationAfterAttack: 0.8
   attackPoint: {fileID: 1227369431}
-  attackRadius: 0.8
+  attackRadius: 1.4
   targetLayer:
     serializedVersion: 2
     m_Bits: 128
@@ -841,7 +842,7 @@ MonoBehaviour:
   energyBarFill: {fileID: 383900819}
   normalEnergyColor: {r: 0, g: 0, b: 1, a: 1}
   fullEnergyColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  auraEffect: {fileID: 0}
+  auraEffect: {fileID: 715988738}
 --- !u!1 &114471439
 GameObject:
   m_ObjectHideFlags: 0
@@ -3264,7 +3265,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &715988739
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -6531,12 +6532,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1358902748}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -12.3855715, y: 0.6572312, z: -0.018497463}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalRotation: {x: -0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.13, y: -0.12, z: -0.018497463}
+  m_LocalScale: {x: -1.25, y: 1.25, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 104991661}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1380023812
 GameObject:
@@ -14950,7 +14951,6 @@ SceneRoots:
   - {fileID: 1380023814}
   - {fileID: 1120570878}
   - {fileID: 104991661}
-  - {fileID: 1358902751}
   - {fileID: 114471443}
   - {fileID: 1748448718}
   - {fileID: 978636635}

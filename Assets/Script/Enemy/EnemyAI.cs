@@ -159,7 +159,6 @@ public class EnemyAI : MonoBehaviour
             {
                 float damageToDeal = attacKDamages[attackIndex];
 
-                // ✅ Lấy Character thông qua PlayerController
                 PlayerController playerCtrl = targetEnergy.GetComponentInParent<PlayerController>();
                 if (playerCtrl != null && playerCtrl.player != null && playerCtrl.player.isBlocking)
                 {

@@ -25,7 +25,7 @@ namespace Assets.Script.PlayerSpawn
             }
         }
 
-        public void DealDame(float damage)
+        public void DealDamage(float damage)
         {
             player.DealDamage(damage);
         }
